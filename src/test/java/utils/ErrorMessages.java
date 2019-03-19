@@ -1,12 +1,12 @@
 package utils;
 
-public class Messages {
-    public static String SUCCESSFUL_REGISTER = "Usuario creado";
-    public static String SUCCESSFUL_LOGIN = "Bienvenido";
-    public static String UNSUCCESSFUL_LOGIN = "Usuario y/o Contraseña incorrectos.";
-    public static String LOGOUT = "Iniciar sesión";
-    public static String ADD_FROM_HOME = "1";
-    public static String ADD_FROM_CATALOG = "1";
+public class ErrorMessages {
+    public static String SUCCESSFUL_REGISTRATION = "User already registered";
+    public static String SUCCESSFUL_LOGIN = "Unsuccessful login";
+    public static String UNSUCCESSFUL_LOGIN = "Unsuccessful login failed";
+    public static String LOGOUT = "Unsuccessful logout";
+    public static String ADD_FROM_HOME = "Product not added";
+    public static String ADD_FROM_CATALOG = "Product not added";
     public static String VERIFY_AFTER_LOGIN = "Products not saved";
     public static String ADD_STOCK = "Product stock could not be added";
     public static String DECREASE_QUANTITY = "Error removing product";

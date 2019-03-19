@@ -4,12 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import utils.Paths;
 import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatalogPage extends BasePage{
+public class CatalogPage extends NavegationBar{
 
     @FindBy(xpath = "//ul[@class='product-category-list']/descendant::a")
     private List<WebElement> productCategories = new ArrayList<WebElement>();
@@ -18,6 +19,8 @@ public class CatalogPage extends BasePage{
     private WebElement shoppingCartTotal;
 
     private List<WebElement> products = new ArrayList<WebElement>();
+
+    private WebElement product;
 
     public CatalogPage(WebDriver webDriver) {
         super(webDriver);
@@ -28,8 +31,9 @@ public class CatalogPage extends BasePage{
         waitForVisibilityOfElements(productCategories);
         findProductCategory();
         findProductsPerCategory();
-        int productIndex = findProduct();
-        addProduct(productIndex);
+        int index = findProductIndex();
+        product = findProduct(index);
+        addProduct();
     }
 
     public void findProductCategory(){
@@ -46,11 +50,11 @@ public class CatalogPage extends BasePage{
     }
 
     public void findProductsPerCategory(){
-        By locator = By.xpath("//div[@id='products_by_category']/child::div");
+        By locator = By.xpath(Paths.PRODUCTS_PER_CATEGORY);
         products = webDriver.findElements(locator);
     }
 
-    public int findProduct(){
+    public int findProductIndex(){
         int index = getRandomIndex(products.size());
         goToProduct(index);
         return index;
@@ -60,16 +64,20 @@ public class CatalogPage extends BasePage{
         clickAction(products.get(index));
     }
 
-    public void addProduct(int index){
-        WebElement addButton = findAddButton(index);
+    public WebElement findProduct(int index){
+        return products.get(index);
+    }
+
+    public void addProduct(){
+        WebElement addButton = findAddButton();
         moveToElement(addButton);
         waitForElementToBeClickable(addButton);
         addButton.click();
     }
 
-    public WebElement findAddButton(int index){
-        By addButtonLocator = By.xpath("//div[@id='products_by_category']/child::div["+(index+1)+"]/descendant::a[@title='Agregar']");
-        return webDriver.findElement(addButtonLocator);
+    public WebElement findAddButton(){
+        By addButtonLocator = By.xpath(Paths.ADD_BUTTON);
+        return product.findElement(addButtonLocator);
     }
 
     public String getTotalProducts(){

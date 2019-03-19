@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Paths;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class BasePage {
 
     WebDriver webDriver;
     private static int WAIT_SECONDS = 5;
+
+
 
 
     public BasePage(WebDriver webDriver) {
@@ -40,7 +43,7 @@ public class BasePage {
     }
 
     public void waitForInvisiblePageLoader() {
-        By loader = By.xpath("//div[@class='loader']");
+        By loader = By.xpath(Paths.LOADER);
         new WebDriverWait(webDriver,WAIT_SECONDS).until(ExpectedConditions.invisibilityOfElementLocated(loader));
     }
 
@@ -61,13 +64,5 @@ public class BasePage {
     public void moveToElement(WebElement element){
         Actions actions = new Actions(webDriver);
         actions.moveToElement(element).perform();
-    }
-
-    public void  sleep(){
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

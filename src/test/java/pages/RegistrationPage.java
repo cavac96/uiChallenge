@@ -1,5 +1,6 @@
 package pages;
 
+import models.User;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,17 +42,15 @@ public class RegistrationPage extends BasePage {
         super(webDriver);
     }
 
-    public void fillInForm(String name, String lastname, String username, String email, String password, String passwordConfirmation) {
+    public void fillInForm(User user) {
         waitForInvisiblePageLoader();
         waitForRegisterForm();
-
-        nameField.sendKeys(name);
-        lastNameField.sendKeys(lastname);
-        usernameField.sendKeys(username);
-        emailField.sendKeys(email);
-        passwordField.sendKeys(password);
-        passwordConfirmationField.sendKeys(passwordConfirmation);
-
+        nameField.sendKeys(user.getName());
+        lastNameField.sendKeys(user.getLastname());
+        usernameField.sendKeys(user.getUsername());
+        emailField.sendKeys(user.getEmail());
+        passwordField.sendKeys(user.getPassword());
+        passwordConfirmationField.sendKeys(user.getPasswordConfirmation());
         clickOnRegisterButton();
     }
 
