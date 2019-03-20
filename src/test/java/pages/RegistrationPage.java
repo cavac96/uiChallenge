@@ -38,12 +38,12 @@ public class RegistrationPage extends BasePage {
 
     private Alert registerAlert;
 
-    public RegistrationPage(WebDriver webDriver) {
+    public RegistrationPage(WebDriver webDriver){
         super(webDriver);
     }
 
     public void fillInForm(User user) {
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForInvisiblePageLoader();
         waitForRegisterForm();
         nameField.sendKeys(user.getName());
         lastNameField.sendKeys(user.getLastname());
@@ -59,20 +59,20 @@ public class RegistrationPage extends BasePage {
     }
 
     public String getAlertText(){
-        waitForAlert();
-        registerAlert = webDriver.switchTo().alert();
+        getWebDriverFacade().waitForAlert();
+        registerAlert = getWebDriverFacade().switchToAlert();
         return registerAlert.getText();
     }
 
 
     public void waitForRegisterForm(){
-        waitForVisibilityOfElement(nameField);
-        waitForVisibilityOfElement(lastNameField);
-        waitForVisibilityOfElement(usernameField);
-        waitForVisibilityOfElement(emailField);
-        waitForVisibilityOfElement(passwordField);
-        waitForVisibilityOfElement(passwordConfirmationField);
-        waitForElementToBeClickable(registerButton);
+        getWebDriverFacade().waitForVisibilityOfElement(nameField);
+        getWebDriverFacade().waitForVisibilityOfElement(lastNameField);
+        getWebDriverFacade().waitForVisibilityOfElement(usernameField);
+        getWebDriverFacade().waitForVisibilityOfElement(emailField);
+        getWebDriverFacade().waitForVisibilityOfElement(passwordField);
+        getWebDriverFacade().waitForVisibilityOfElement(passwordConfirmationField);
+        getWebDriverFacade().waitForElementToBeClickable(registerButton);
     }
 
 }

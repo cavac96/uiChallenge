@@ -4,13 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import utils.Paths;
 import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePage extends NavegationBar {
+public class HomePage extends HasNavbarPage {
 
     @FindBy(xpath = "//div[@id='products-carousel']/div")
     private List<WebElement> products = new ArrayList<WebElement>();
@@ -23,8 +22,8 @@ public class HomePage extends NavegationBar {
     }
 
     public void addProductsFromHomePage(int times) {
-        waitForInvisiblePageLoader();
-        waitForVisibilityOfElements(products);
+        getWebDriverFacade().waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForVisibilityOfElements(products);
         int index = findProductIndex();
         for (int i=0; i<times;i++){
             addProduct(index);
@@ -40,8 +39,8 @@ public class HomePage extends NavegationBar {
     public void addProduct(int index){
         productCard = getProductCard(index);
         WebElement addButton = findAddProductButton();
-        moveToElement(addButton);
-        waitForElementToBeClickable(addButton);
+        getWebDriverFacade().moveToElement(addButton);
+        getWebDriverFacade().waitForElementToBeClickable(addButton);
         addButton.click();
     }
 
@@ -59,18 +58,18 @@ public class HomePage extends NavegationBar {
     }
 
     public void goToProduct(int index){
-        clickAction(products.get(index));
+        getWebDriverFacade().clickAction(products.get(index));
     }
 
     public int addProductStock(){
-        waitForInvisiblePageLoader();
-        waitForVisibilityOfElements(products);
+        getWebDriverFacade().waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForVisibilityOfElements(products);
         int index = findProductIndex();
         productCard = getProductCard(index);
         WebElement addButton = findAddProductButton();
-        waitForVisibilityOfElement(addButton);
-        moveToElement(addButton);
-        waitForElementToBeClickable(addButton);
+        getWebDriverFacade().waitForVisibilityOfElement(addButton);
+        getWebDriverFacade().moveToElement(addButton);
+        getWebDriverFacade().waitForElementToBeClickable(addButton);
         int stockSize = Integer.parseInt(getStockSize(index));
         for(int i = 0; i <stockSize; i++){
             addButton.click();
@@ -79,13 +78,14 @@ public class HomePage extends NavegationBar {
     }
 
     public String getStockSize(int index){
-        By quantityLocation = By.xpath(Paths.STOCK_SIZE);
+        //By quantityLocation = By.xpath(Paths.STOCK_SIZE);
+        By quantityLocation = By.xpath(".//div[@class='miso-prd-total']");
         return products.get(index).findElement(quantityLocation).getText();
     }
 
     public WebElement toRemoveProduct(){
-        waitForInvisiblePageLoader();
-        waitForVisibilityOfElements(products);
+        getWebDriverFacade().waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForVisibilityOfElements(products);
         findAddedProducts();
         int index = findAddedProductIndex();
         WebElement product = findAddedProduct(index);
@@ -94,8 +94,10 @@ public class HomePage extends NavegationBar {
     }
 
     public void findAddedProducts(){
-        By addedProductsLocator = By.xpath(Paths.ADDED_PRODUCTS);
-        addedProducts = webDriver.findElements(addedProductsLocator);
+        //By addedProductsLocator = By.xpath(Paths.ADDED_PRODUCTS);
+        By addedProductsLocator = By.xpath("//div[@id='products-carousel']/child::div[div[@class='miso-prd-qty' and text()>0]]");
+        //addedProducts = webDriver.findElements(addedProductsLocator);
+        addedProducts = getWebDriverFacade().findElementsByLocator(addedProductsLocator);
     }
 
     public int findAddedProductIndex(){
@@ -105,13 +107,13 @@ public class HomePage extends NavegationBar {
     }
 
     public void goToAddedProduct(int index){
-        clickAction(addedProducts.get(index));
+        getWebDriverFacade().clickAction(addedProducts.get(index));
     }
 
     public void removeProduct(WebElement product){
         WebElement removeButton = findRemoveProductButton(product);
-        moveToElement(removeButton);
-        waitForElementToBeClickable(removeButton);
+        getWebDriverFacade().moveToElement(removeButton);
+        getWebDriverFacade().waitForElementToBeClickable(removeButton);
         removeButton.click();
     }
 
@@ -120,7 +122,8 @@ public class HomePage extends NavegationBar {
     }
 
     public WebElement findRemoveProductButton(WebElement product){
-        By productLocator = By.xpath(Paths.REMOVE_BUTTON);
+        //By productLocator = By.xpath(Paths.REMOVE_BUTTON);
+        By productLocator = By.xpath(".//descendant::a[@title='Remover']");
         return product.findElement(productLocator);
     }
 
@@ -129,7 +132,8 @@ public class HomePage extends NavegationBar {
     }
 
     public String getProductCount(WebElement product){
-        By productCountLocation = By.xpath(Paths.PRODUCT_COUNT);
+        //By productCountLocation = By.xpath(Paths.PRODUCT_COUNT);
+        By productCountLocation = By.xpath(".//div[@class='miso-prd-qty']");
         return product.findElement(productCountLocation).getText();
     }
 
@@ -137,22 +141,23 @@ public class HomePage extends NavegationBar {
         findAddedProducts();
         WebElement removeAllButton;
         for(WebElement product: addedProducts){
-            waitForVisibilityOfElement(product);
+            getWebDriverFacade().waitForVisibilityOfElement(product);
             removeAllButton = findRemoveAllProductButton(product);
-            moveToElement(removeAllButton);
-            waitForElementToBeClickable(removeAllButton);
+            getWebDriverFacade().moveToElement(removeAllButton);
+            getWebDriverFacade().waitForElementToBeClickable(removeAllButton);
             removeAllButton.click();
         }
     }
 
     public WebElement findRemoveAllProductButton(WebElement product){
-        By clearButtonLocator = By.xpath(Paths.CLEAR_BUTTON);
+        //By clearButtonLocator = By.xpath(Paths.CLEAR_BUTTON);
+        By clearButtonLocator = By.xpath(".//descendant::a[@title='Limpiar']");
         return product.findElement(clearButtonLocator);
     }
 
     public void verifyProductDetails(){
-        waitForInvisiblePageLoader();
-        waitForVisibilityOfElements(products);
+        getWebDriverFacade().waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForVisibilityOfElements(products);
         int index = findProductIndex();
         productCard = getProductCard(index);
         openProductDetail();
@@ -160,31 +165,36 @@ public class HomePage extends NavegationBar {
 
     public void openProductDetail(){
         WebElement detailsButton = findDetailsButton();
-        moveToElement(detailsButton);
-        waitForElementToBeClickable(detailsButton);
+        getWebDriverFacade().moveToElement(detailsButton);
+        getWebDriverFacade().waitForElementToBeClickable(detailsButton);
         detailsButton.click();
     }
 
     public WebElement findDetailsButton(){
-        By detailsButtonLocator = By.xpath(Paths.DETAILS_BUTTON);
+        //By detailsButtonLocator = By.xpath(Paths.DETAILS_BUTTON);
+        By detailsButtonLocator = By.xpath(".//descendant::a[@title='Ver detalle']");
         return productCard.findElement(detailsButtonLocator);
     }
 
     public WebElement getProductDetailModalContent(){
-        By productDetail = By.xpath(Paths.DETAILS_MODAL);
-        return webDriver.findElement(productDetail);
+        //By productDetail = By.xpath(Paths.DETAILS_MODAL);
+        By productDetail = By.xpath("//div[@class='modal-content' and descendant::div[@id='product-detail-name']]");
+        //return webDriver.findElement(productDetail);
+        return getWebDriverFacade().findElementByLocator(productDetail);
     }
 
     public String getProductDetailsTitle(){
         WebElement productDetailsModal = getProductDetailModalContent();
-        By productDetailTitle = By.xpath(Paths.DETAILS_MODAL_TITLE);
-        waitForInvisiblePageLoader();
-        waitForVisibilityOfElementLocated(productDetailTitle);
+        //By productDetailTitle = By.xpath(Paths.DETAILS_MODAL_TITLE);
+        By productDetailTitle = By.xpath(".//descendant::h3[parent::div[@id='product-detail-name']]");
+        getWebDriverFacade().waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForVisibilityOfElementLocated(productDetailTitle);
         return productDetailsModal.findElement(productDetailTitle).getText();
     }
 
     public String getProductName(){
-        By productNameLocator = By.xpath(Paths.PRODUCT_NAME);
+        //By productNameLocator = By.xpath(Paths.PRODUCT_NAME);
+        By productNameLocator = By.xpath(".//descendant::a[parent::h3[@class='title']]");
         return productCard.findElement(productNameLocator).getText();
     }
 
@@ -199,12 +209,13 @@ public class HomePage extends NavegationBar {
     }
 
     public String getProductName(WebElement product){
-        By productNameLocator = By.xpath(Paths.PRODUCT_NAME);
+        //By productNameLocator = By.xpath(Paths.PRODUCT_NAME);
+        By productNameLocator = By.xpath(".//descendant::a[parent::h3[@class='title']]");
         return product.findElement(productNameLocator).getText();
     }
 
-    public String getProductAmount(WebElement product){
+    /*public String getProductAmount(WebElement product){
         By productAmountLocator = By.xpath(Paths.PRODUCT_COUNT);
         return product.findElement(productAmountLocator).getText();
-    }
+    }*/
 }

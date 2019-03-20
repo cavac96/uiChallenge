@@ -8,12 +8,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import utils.Paths;
 import utils.Utils;
 
 import java.util.List;
 
-public class CheckOutPage extends NavegationBar{
+public class CheckOutPage extends  BasePage{
 
     @FindBy(xpath = "//input[@id='name']")
     private WebElement nameField;
@@ -63,42 +62,42 @@ public class CheckOutPage extends NavegationBar{
     }
 
     public HomePage fillInForms(PaymentMethod paymentMethod, Billing billing){
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForInvisiblePageLoader();
         waitForBillingDataForm();
         fillInBillingDataForm(billing);
         waitForPaymentMethodForm();
         fillInPaymentForm(paymentMethod);
         paymentButton.click();
-        return PageFactory.initElements(webDriver, HomePage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), HomePage.class);
     }
 
     public HomePage fillInForms(Billing billing){
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForInvisiblePageLoader();
         waitForBillingDataForm();
         fillInBillingDataForm(billing);
-        waitForVisibilityOfElements(paymentMethodList);
+        getWebDriverFacade().waitForVisibilityOfElements(paymentMethodList);
         selectPaymentMethod();
         paymentButton.click();
-        return PageFactory.initElements(webDriver, HomePage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), HomePage.class);
     }
 
     public void waitForBillingDataForm(){
-        waitForVisibilityOfElement(nameField);
-        waitForVisibilityOfElement(lastnameField);
-        waitForVisibilityOfElement(addressField);
-        waitForVisibilityOfElement(aptField);
-        waitForVisibilityOfElement(countryDropDown);
-        waitForVisibilityOfElement(departmentDropDown);
-        waitForVisibilityOfElement(postalCodeField);
-        waitForVisibilityOfElement(phoneField);
-        waitForVisibilityOfElement(emailField);
-        waitForVisibilityOfElement(paymentButton);
+        getWebDriverFacade().waitForVisibilityOfElement(nameField);
+        getWebDriverFacade().waitForVisibilityOfElement(lastnameField);
+        getWebDriverFacade().waitForVisibilityOfElement(addressField);
+        getWebDriverFacade().waitForVisibilityOfElement(aptField);
+        getWebDriverFacade().waitForVisibilityOfElement(countryDropDown);
+        getWebDriverFacade().waitForVisibilityOfElement(departmentDropDown);
+        getWebDriverFacade().waitForVisibilityOfElement(postalCodeField);
+        getWebDriverFacade().waitForVisibilityOfElement(phoneField);
+        getWebDriverFacade().waitForVisibilityOfElement(emailField);
+       getWebDriverFacade().waitForVisibilityOfElement(paymentButton);
     }
 
     public void waitForPaymentMethodForm(){
-        waitForVisibilityOfElement(cardNumberField);
-        waitForVisibilityOfElement(dueDateField);
-        waitForVisibilityOfElement(cvvCodeField);
+        getWebDriverFacade().waitForVisibilityOfElement(cardNumberField);
+        getWebDriverFacade().waitForVisibilityOfElement(dueDateField);
+        getWebDriverFacade().waitForVisibilityOfElement(cvvCodeField);
     }
 
     public void fillInBillingDataForm(Billing billing){
@@ -136,25 +135,28 @@ public class CheckOutPage extends NavegationBar{
     }
 
     public WebElement getPurchaseModal(){
-        By modalLocator = By.xpath(Paths.PURCHASE_MODAL);
-        waitForVisibilityOfElementLocated(modalLocator);
-        return webDriver.findElement(modalLocator);
+        //By modalLocator = By.xpath(Paths.PURCHASE_MODAL);
+        By modalLocator = By.xpath("//div[@class='modal-content' and descendant::h5[contains(text(),'Compra Realizada')]]");
+        getWebDriverFacade().waitForVisibilityOfElementLocated(modalLocator);
+        return getWebDriverFacade().findElementByLocator(modalLocator);
     }
 
     public WebElement getModalButton(WebElement modal){
-        By okButton = By.xpath(Paths.MODAL_BUTTON);
+        //By okButton = By.xpath(Paths.MODAL_BUTTON);
+        By okButton = By.xpath(".//descendant::button");
         return modal.findElement(okButton);
     }
 
     public String getModalTitle(){
         WebElement modal = getPurchaseModal();
-        By modalTitleLocator = By.xpath(Paths.MODAL_TITLE);
+        //By modalTitleLocator = By.xpath(Paths.MODAL_TITLE);
+        By modalTitleLocator = By.xpath(".//descendant::h5[contains(text(),'Compra Realizada')]");
         return modal.findElement(modalTitleLocator).getText();
     }
 
     public void selectPaymentMethod(){
         int index = getRandomPaymentMethod(paymentMethodList.size());
-        clickAction(paymentMethodList.get(index));
+        getWebDriverFacade().clickAction(paymentMethodList.get(index));
     }
 
     public int getRandomPaymentMethod(int max){

@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utils.Paths;
 
 public class LoginPage extends BasePage {
     @FindBy(id = "username")
@@ -21,12 +20,12 @@ public class LoginPage extends BasePage {
     }
 
     public HomePage fillInForm(User user) {
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForInvisiblePageLoader();
         waitForForm();
         usernameField.sendKeys(user.getUsername());
         passwordField.sendKeys(user.getPassword());
         clickOnButton();
-        return PageFactory.initElements(webDriver, HomePage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), HomePage.class);
     }
 
     public void clickOnButton() {
@@ -34,22 +33,24 @@ public class LoginPage extends BasePage {
     }
 
     public void waitForForm() {
-        waitForVisibilityOfElement(usernameField);
-        waitForVisibilityOfElement(passwordField);
-        waitForVisibilityOfElement(loginButton);
+        getWebDriverFacade().waitForVisibilityOfElement(usernameField);
+        getWebDriverFacade().waitForVisibilityOfElement(passwordField);
+        getWebDriverFacade().waitForVisibilityOfElement(loginButton);
     }
 
     public String getModalText() {
-        By modalLocation = By.xpath(Paths.LOGIN_MODAL_TEXT);
-        waitForVisibilityOfElementLocated(modalLocation);
-        WebElement modalContent = webDriver.findElement(modalLocation);
+        //By modalLocation = By.xpath(Paths.LOGIN_MODAL_TEXT);
+        By modalLocation = By.xpath("//div[@class='modal-body' and contains(text(), 'Usuario y/o')]");
+        getWebDriverFacade().waitForVisibilityOfElementLocated(modalLocation);
+        WebElement modalContent = getWebDriverFacade().findElementByLocator(modalLocation);
         return modalContent.getText();
     }
 
     public WebElement getModalButton() {
-        By modalLocation = By.xpath(Paths.LOGIN_MODAL_BUTTON);
-        waitForElementLocatedToBeClickable(modalLocation);
-        return webDriver.findElement(modalLocation);
+        //By modalLocation = By.xpath(Paths.LOGIN_MODAL_BUTTON);
+        By modalLocation = By.xpath("//button[contains(text(), 'Intentar de Nuevo')]");
+        getWebDriverFacade().waitForElementLocatedToBeClickable(modalLocation);
+        return getWebDriverFacade().findElementByLocator(modalLocation);
     }
 
     public void acceptModal() {

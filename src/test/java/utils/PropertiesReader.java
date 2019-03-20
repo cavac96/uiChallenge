@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertiesReader {
-    private static final String PROPERTIES_FILENAME = "/com/endava/config.properties";
+    private static final String PROPERTIES_FILENAME = "/config.properties";
     private static Properties properties;
 
     private PropertiesReader() {

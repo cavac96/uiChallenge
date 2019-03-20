@@ -1,11 +1,11 @@
-package pages;
+package pages.components;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utils.Paths;
+import pages.*;
 
 public class NavegationBar extends BasePage{
     @FindBy(xpath = "//a[contains(text(),'Registrarse')]")
@@ -38,32 +38,32 @@ public class NavegationBar extends BasePage{
     }
 
     public RegistrationPage clickOnRegisterButton() {
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForInvisiblePageLoader();
         registerButton.click();
-        return PageFactory.initElements(webDriver, RegistrationPage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), RegistrationPage.class);
     }
 
     public LoginPage clickOnLoginButton() {
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForInvisiblePageLoader();
         loginButton.click();
-        return PageFactory.initElements(webDriver, LoginPage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), LoginPage.class);
     }
 
     public String getWelcomeText() {
-        waitForVisibilityOfElement(welcomeButton);
+        getWebDriverFacade().waitForVisibilityOfElement(welcomeButton);
         return welcomeButton.getText();
     }
 
     public String getLoginText() {
-        waitForVisibilityOfElement(loginButton);
+        getWebDriverFacade().waitForVisibilityOfElement(loginButton);
         return loginButton.getText();
     }
 
     public HomePage clickOnLogoutButton() {
-        waitForElementToBeClickable(logoutButton);
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForElementToBeClickable(logoutButton);
+        getWebDriverFacade().waitForInvisiblePageLoader();
         logoutButton.click();
-        return PageFactory.initElements(webDriver, HomePage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), HomePage.class);
     }
 
     public String getTotalProducts(){
@@ -71,15 +71,15 @@ public class NavegationBar extends BasePage{
     }
 
     public CatalogPage clickOnCatalogButton(){
-        waitForElementToBeClickable(catalogButton);
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForElementToBeClickable(catalogButton);
+        getWebDriverFacade().waitForInvisiblePageLoader();
         catalogButton.click();
-        return PageFactory.initElements(webDriver, CatalogPage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), CatalogPage.class);
     }
 
     public void verifyAddedProductsAfterLogin(){
-        waitForInvisiblePageLoader();
-        waitForVisibilityOfElement(shoppingCartTotal);
+        getWebDriverFacade().waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForVisibilityOfElement(shoppingCartTotal);
     }
 
     public CheckOutPage checkOut(){
@@ -88,24 +88,25 @@ public class NavegationBar extends BasePage{
     }
 
     public void clickOnShoppingCart(){
-        waitForElementToBeClickable(shoppingCartButton);
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForElementToBeClickable(shoppingCartButton);
+        getWebDriverFacade().waitForInvisiblePageLoader();
         shoppingCartButton.click();
     }
 
     public CheckOutPage clickOnCheckOutButton(){
-        By checkOutButtonLocator = By.xpath(Paths.CHECKOUT_BUTTON);
-        WebElement checkoutButton = webDriver.findElement(checkOutButtonLocator);
-        moveToElement(checkoutButton);
-        waitForElementToBeClickable(checkoutButton);
+        //By checkOutButtonLocator = By.xpath(Paths.CHECKOUT_BUTTON);
+        By checkOutButtonLocator = By.xpath("//button[parent::div[@class='mini-shopcart-action'] and contains(@class,'btn-checkout')]");
+        WebElement checkoutButton = getWebDriverFacade().getWebDriver().findElement(checkOutButtonLocator);
+        getWebDriverFacade().moveToElement(checkoutButton);
+        getWebDriverFacade().waitForElementToBeClickable(checkoutButton);
         checkoutButton.click();
-        return PageFactory.initElements(webDriver, CheckOutPage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), CheckOutPage.class);
     }
 
     public OrdersPage clickOnOrdersButton(){
-        waitForElementToBeClickable(ordersButton);
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForElementToBeClickable(ordersButton);
+        getWebDriverFacade().waitForInvisiblePageLoader();
         ordersButton.click();
-        return PageFactory.initElements(webDriver, OrdersPage.class);
+        return PageFactory.initElements(getWebDriverFacade().getWebDriver(), OrdersPage.class);
     }
 }

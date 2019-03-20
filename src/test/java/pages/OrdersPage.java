@@ -4,12 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import utils.OrderComparator;
-import utils.Paths;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-public class OrdersPage extends NavegationBar{
+public class OrdersPage extends BasePage{
     @FindBy(xpath = "//tbody[@id='orders']/tr")
     static private List<WebElement> orderList;
 
@@ -22,11 +23,11 @@ public class OrdersPage extends NavegationBar{
     }
 
     public void verifyOrderDetails(){
-        waitForInvisiblePageLoader();
-        waitForVisibilityOfElements(orderList);
+        getWebDriverFacade().waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForVisibilityOfElements(orderList);
         getOrder();
         WebElement detailsButton = getDetailsButton();
-        waitForElementToBeClickable(detailsButton);
+        getWebDriverFacade().waitForElementToBeClickable(detailsButton);
         detailsButton.click();
         getOrderModal();
         getOrderProducts();
@@ -39,12 +40,9 @@ public class OrdersPage extends NavegationBar{
         order = orderList.get(index);
     }
 
-    public void sortList(){
-        Collections.sort(orderList, new OrderComparator());
-    }
-
     public WebElement getDetailsButton(){
-        By detailsButtonLocator = By.xpath(Paths.ORDER_DETAILS_BUTTON);
+        //By detailsButtonLocator = By.xpath(Paths.ORDER_DETAILS_BUTTON);
+        By detailsButtonLocator = By.xpath(".//descendant::a[contains(text(),'Ver detalle')]");
         return order.findElement(detailsButtonLocator);
     }
 
@@ -57,23 +55,25 @@ public class OrdersPage extends NavegationBar{
     }
 
     public void getOrderModal(){
-        By modalLocator = By.xpath(Paths.ORDER_MODAL);
-        waitForVisibilityOfElementLocated(modalLocator);
-        orderModal = webDriver.findElement(modalLocator);
+        //By modalLocator = By.xpath(Paths.ORDER_MODAL);
+        By modalLocator = By.xpath("//div[@id='details']");
+        getWebDriverFacade().waitForVisibilityOfElementLocated(modalLocator);
+        orderModal = getWebDriverFacade().findElementByLocator(modalLocator);
     }
 
     public void getOrderProducts(){
-        By productsLocator = By.xpath(Paths.ORDER_PRODUCTS_MODAL);
+        //By productsLocator = By.xpath(Paths.ORDER_PRODUCTS_MODAL);
+        By productsLocator = By.xpath(".//descendant::tbody/tr");
         productList = orderModal.findElements(productsLocator);
     }
 
     public List<String> getOrderProductsName(){
-        waitForInvisiblePageLoader();
+        getWebDriverFacade().waitForInvisiblePageLoader();
         getOrderModal();
         getOrderProducts();
         List<String> orderProductsList = new ArrayList<String>();
         for(WebElement product: productList){
-            waitForVisibilityOfElement(product);
+            getWebDriverFacade().waitForVisibilityOfElement(product);
             String name = getProductName(product);
             orderProductsList.add(name);
         }
@@ -81,12 +81,14 @@ public class OrdersPage extends NavegationBar{
     }
 
     public String getProductName(WebElement product){
-        By productNameLocator = By.xpath(Paths.ORDER_PRODUCT_NAME_MODAL);
+        //By productNameLocator = By.xpath(Paths.ORDER_PRODUCT_NAME_MODAL);
+        By productNameLocator = By.xpath("./td[1]");
         return product.findElement(productNameLocator).getText();
     }
 
     public String getProductAmount(WebElement product){
-        By productAmountLocator = By.xpath(Paths.ORDER_PRODUCT_AMOUNT_MODAL);
+        //By productAmountLocator = By.xpath(Paths.ORDER_PRODUCT_AMOUNT_MODAL);
+        By productAmountLocator = By.xpath("./td[2]");
         return product.findElement(productAmountLocator).getText();
     }
 
@@ -97,7 +99,8 @@ public class OrdersPage extends NavegationBar{
     }
 
     public WebElement getModalButton(){
-        By button = By.xpath(Paths.ORDER_BUTTON_MODAL);
+        //By button = By.xpath(Paths.ORDER_BUTTON_MODAL);
+        By button = By.xpath(".//descendant::button");
         return orderModal.findElement(button);
     }
 
