@@ -10,6 +10,7 @@ public class HasNavbarPage extends BasePage{
 
     public HasNavbarPage(WebDriver webDriver) {
         super(webDriver);
+
         //TODO PO?
         navegationBar = PageFactory.initElements(webDriver, NavegationBar.class);
     }

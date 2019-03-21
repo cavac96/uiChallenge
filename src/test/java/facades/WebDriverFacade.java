@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 public class WebDriverFacade {
-    private WebDriver webDriver;
+    private static WebDriver webDriver;
     private static int WAIT_SECONDS = 5;
 
     public WebDriverFacade(WebDriver webDriver){
