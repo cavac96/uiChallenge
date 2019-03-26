@@ -145,18 +145,16 @@ public class EcofoodTest extends BaseTest {
         homePage = loginPage.fillInForm(user);
         homePage.addProductsFromHomePage(1);
         homePage.addProductsFromHomePage(1);
-
         List<String> homeList = homePage.getAddedProductsName();
 
         CheckOutPage checkOutPage = homePage.getNavegationBar().checkOut();
         homePage = checkOutPage.fillInForms(Utils.generateRandomBilling());
         checkOutPage.acceptModal();
+
         OrdersPage ordersPage = homePage.getNavegationBar().clickOnOrdersButton();
         ordersPage.verifyOrderDetails();
-
         List<String> orderList = ordersPage.getOrderProductsName();
         //ordersPage.acceptModal();
-        System.out.println();
         assertThat(ErrorMessages.VERIFY_ORDER_DETAILS, homeList, equalTo(orderList));
     }
 }
